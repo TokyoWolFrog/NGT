@@ -76,7 +76,7 @@ NGTObjectDistances ngt_create_empty_results(NGTError);
 
 bool ngt_search_index(NGTIndex, double*, int32_t, size_t, float, NGTObjectDistances, NGTError);
 
-bool ngt_search_index_by_radius(NGTIndex, double*, int32_t, size_t, float, NGTObjectDistances, NGTError);
+bool ngt_search_index_by_radius(NGTIndex, double*, int32_t, size_t, float, float, NGTObjectDistances, NGTError);
 
 int32_t ngt_get_size(NGTObjectDistances, NGTError); // deprecated
   
