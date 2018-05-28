@@ -292,6 +292,44 @@ bool ngt_search_index(NGTIndex index, double *query, int32_t query_dim, size_t s
   return true;
 }
 
+bool ngt_search_index_by_radius(NGTIndex index, double *query, int32_t query_dim, size_t size, float radius, float epsilon, NGTObjectDistances results, NGTError error) {
+  if(index == NULL || query == NULL || results == NULL){
+    std::stringstream ss;
+    ss << "Capi : " << __FUNCTION__ << "() : parametor error: index = " << index << " query = " << query << " results = " << results;
+    operate_error_string_(ss, error);
+    return false;
+  }
+  
+  NGT::Index* pindex = static_cast<NGT::Index*>(index);    
+  NGT::Object *ngtquery = NULL;
+
+  try{	  
+    std::vector<double> vquery(&query[0], &query[query_dim]);
+    ngtquery = pindex->allocateObject(vquery);
+    // set search prameters.
+    NGT::SearchContainer sc(*ngtquery);      // search parametera container.
+    
+    sc.setResults(static_cast<NGT::ObjectDistances*>(results));          // set the result set.
+    sc.setSize(size);             // the number of resultant objects.
+    sc.setRadius(radius);         // search radius.
+    sc.setEpsilon(epsilon);           // set exploration coefficient.
+    
+    pindex->search(sc);
+    
+    // delete the query object.
+    pindex->deleteObject(ngtquery);
+  }catch(std::exception &err) {
+    std::stringstream ss;
+    ss << "Capi : " << __FUNCTION__ << "() : Error: " << err.what();
+    operate_error_string_(ss, error);      
+    if(ngtquery != NULL){
+      pindex->deleteObject(ngtquery);
+    }
+    return false;
+  }
+  return true;
+}
+
 // * deprecated *
 int32_t ngt_get_size(NGTObjectDistances results, NGTError error) {
   if(results == NULL){
