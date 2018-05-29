@@ -310,7 +310,7 @@ bool ngt_search(NGTIndex index, double *query, NGTSearchParameter &search_parame
     NGT::SearchContainer sc(*ngtquery);      // search parametera container.
     
     sc.setResults(static_cast<NGT::ObjectDistances*>(results));          // set the result set.
-    sc.setSize(search_parameter.size);             // the number of resultant objects.
+    sc.setSize(search_parameter.result_size);             // the number of resultant objects.
     sc.setRadius(search_parameter.radius);         // search radius.
     sc.setEpsilon(search_parameter.epsilon);           // set exploration coefficient.
     
