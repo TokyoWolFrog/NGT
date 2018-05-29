@@ -35,6 +35,13 @@ typedef struct {
   ObjectID id;
   float distance;
 } NGTObjectDistance;
+  
+typedef struct {
+  int32_t query_dim;
+  size_t result_size;
+  float epsilon;
+  float radius;
+} NGTSearchParameter;
 
 NGTIndex ngt_open_index(const char *, NGTError);
 
@@ -75,6 +82,8 @@ bool ngt_set_property_distance_type_hamming(NGTProperty, NGTError);
 NGTObjectDistances ngt_create_empty_results(NGTError);
 
 bool ngt_search_index(NGTIndex, double*, int32_t, size_t, float, NGTObjectDistances, NGTError);
+  
+bool ngt_search(NGTIndex, double*, NGTSearchParameter, NGTObjectDistances, NGTError);
 
 int32_t ngt_get_size(NGTObjectDistances, NGTError); // deprecated
   
